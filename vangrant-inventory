@@ -1,0 +1,12 @@
+[prometheus-deployment:children]
+prometheus-server
+grafana-server
+
+[prometheus-server]
+192.168.1.51
+
+[grafana-server]
+192.168.1.52
+
+[targets]
+192.168.1.53
