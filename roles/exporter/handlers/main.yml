@@ -1,0 +1,6 @@
+- name: start and enable node-exporter service
+  shell:
+    cmd: |
+      systemctl start node-exporter
+      systemctl enable node-exporter
+    executable: /bin/bash

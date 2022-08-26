@@ -1,0 +1,23 @@
+- name: update repositories
+  apt:
+    update_cache: yes
+    state: latest
+
+- name: Download node exporter 
+  shell:
+    chdir: /tmp
+    cmd: |
+      apt install -y wget
+      wget {{ exporter_url }}
+      tar -xzf node_exporter-*.tar.gz -C {{ exporter_home }}
+      mv {{ exporter_home }}/node_exporter-* {{ exporter_home }}/node_exporter
+    executable: /bin/bash
+
+- name: Setup node exporter service 
+  copy:
+    src: node-exporter.service
+    dest: /etc/systemd/system/node-exporter.service
+    owner: root
+    group: root
+    mode: 0644
+  notify: start and enable node-exporter service 
