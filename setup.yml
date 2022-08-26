@@ -1,0 +1,33 @@
+- hosts: localhost
+  connection: local
+  gather_facts: false
+
+  tasks:
+    - name: Create the ssh_keys folder
+      file:
+        path: "{{playbook_dir}}/secrets/ssh_keys"
+        state: directory
+        mode: '0755'
+
+    - name: Generate key pairs
+      openssh_keypair:
+        path: "{{playbook_dir}}/secrets/ssh_keys/{{item}}"
+        type: rsa
+        size: 4096
+        state: present
+        force: no
+      loop:
+        - prometheus-server
+        - grafana-server
+        - target
+    - name: Setting up ssh keys via bashscript
+      command: ./setup.sh
+    - name: Addind entries to /etc/hosts
+      become: true
+      lineinfile:
+        path: /etc/hosts
+        line: "{{ item }}"
+      loop:
+        - "192.168.51.101 prometheus-srv"
+        - "192.168.51.102 grafana-srv"
+        - "192.168.51.103 target1"
