@@ -2,11 +2,20 @@
 prometheus-server
 grafana-server
 
+[prometheus-deployment:vars]
+ansible_ssh_common_args='-F vagrant_ssh_config'
+
 [prometheus-server]
-prometheus-srv
+#192.168.1.51
+box_1
+#prometheus-srv
 
 [grafana-server]
-grafana-srv
+#192.168.1.52
+box_2
+#grafana-srv
 
 [targets]
-target1
+#192.168.1.53
+box_3
+#target1
